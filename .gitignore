@@ -1,0 +1,9 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# ImageNet dataset (too large for GitHub)
+data/imagenet/
+
+# VS Code settings
+.vscode/
