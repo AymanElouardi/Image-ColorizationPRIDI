@@ -1,134 +1,185 @@
 # Vintage Image Restoration & Colorization using U-Net
 
 ## Overview
-This repository hosts the implementation of a Deep Learning system aimed at restoring and colorizing "vintage" photographs. Unlike standard colorization tasks that simply predict colors for grayscale images, this project focuses on a comprehensive restoration pipeline: **reversing Sepia tones, removing noise, and restoring original colors.**
 
-The project is structured into two distinct execution phases to balance theoretical validation with practical application:
+This repository hosts the implementation of a Deep Learning system aimed at restoring and colorizing **vintage photographs**. Unlike standard colorization tasks that simply predict colors for grayscale images, this project focuses on a **full restoration pipeline**:
 
-1.  **Phase 1 (Simulation & Scalability):** A lightweight U-Net trained on synthetic data to validate training logic and analyze the impact of class diversity on metrics (SSIM & L1 Loss).
-2.  **Phase 2 (High-Quality Restoration):** An enhanced U-Net architecture (incorporating Batch Normalization & LeakyReLU) trained on the **STL-10** dataset for high-fidelity visual results.
+* Reversing **Sepia tones**
+* Removing **noise / film grain**
+* Restoring **natural colors**
+
+The project is organized into **two complementary phases** to balance scientific validation and high-quality visual performance.
+
+---
+
+## Project Phases
+
+### Phase 1 – Simulation & Scalability Analysis
+
+A lightweight U-Net trained on **synthetic data** to:
+
+* Validate the training pipeline
+* Analyze scalability
+* Study the impact of class diversity on **SSIM** and **L1 Loss**
+
+Experiments are conducted with increasing numbers of object classes:
+**1, 10, 100, and 1000 classes**.
+
+### Phase 2 – High-Quality Restoration
+
+An enhanced U-Net architecture trained on the **STL-10 dataset** for visually realistic restoration.
+
+Key upgrades:
+
+* Batch Normalization
+* LeakyReLU activations
+* Deeper bottleneck (512 channels)
+
+---
 
 ## Key Features
-- **Dual-Phase Approach:** Separate scripts for algorithmic verification (Phase 1) and production-quality training (Phase 2).
-- **Vintage Degradation Pipeline:** Simulates historical image artifacts on-the-fly using:
-    - **Sepia Filter:** Applied via matrix multiplication.
-    - **Gaussian Noise:** Simulates film grain.
-- **Enhanced U-Net Architecture:**
-    - Skip connections for spatial detail preservation.
-    - Expanded bottleneck (512 channels) for semantic context.
-    - Optimized with Batch Normalization to prevent color desaturation.
-- **Automated Dataset Handling:** No manual downloads required. Phase 1 uses synthetic generation, and Phase 2 automatically downloads STL-10 via Torchvision.
+
+* **Dual-Phase Design** – separates theoretical analysis from production-quality training
+* **Vintage Degradation Pipeline** (applied on-the-fly):
+
+  * Sepia transformation via matrix multiplication
+  * Gaussian noise to simulate film grain
+* **Enhanced U-Net Architecture**:
+
+  * Skip connections for spatial detail preservation
+  * Deep semantic bottleneck
+  * Batch Normalization to avoid color desaturation
+* **Automated Dataset Handling**:
+
+  * Phase 1: synthetic data generation
+  * Phase 2: automatic STL-10 download via Torchvision
+
+---
 
 ## Requirements
-To install the necessary dependencies, run the following command:
+
+Install dependencies using:
 
 ```bash
 pip install torch numpy matplotlib torchvision
-## How to Train the Model
-
-1. Clone this repository using `git clone https://github.com/williamcfrancis/CNN-Image-Colorization-Pytorch.git`
-
-Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQeEtQj6wbRx6seM8j0Rx5/view?usp=sharing and extract it outside the current directory. The directory structure should look like:
-
 ```
+
+---
+
+## Project Structure
+
+```text
 │
-├── train_phase1_simulation.py   # Script for scalability analysis (Synthetic Data)
-├── train_phase2_stl10.py        # Script for high-quality restoration (STL-10)
+├── train_phase1_simulation.py   # Phase 1: scalability & synthetic experiments
+├── train_phase2_stl10.py        # Phase 2: high-quality restoration (STL-10)
 ├── Report.pdf                   # Detailed technical report
 └── README.md                    # Project documentation
 ```
 
-2. Run train.py with the following arguments:
+---
 
-1. Phase 1: Simulation & Scalability Test
-This script runs a comparative experiment to analyze how the model behaves when the number of object classes increases (1, 10, 100, 1000). It uses a lightweight U-Net and synthetic data.
-python train_phase1_simulation.py
-The training creates a `/Outputs/` folder with subfolders `/Color/` and `/Gray/`. Validation results are saved in `/Color/` and inputs in `/Gray/`. The training also creates an `/Images/` folder with `train/val` images separated into different folders. If `save_model` is enabled, the final model is saved in a `/Models/` folder as a .pth file.
+## How to Run
 
-بله، بر اساس کدهای شما (که شامل دو بخش شبیه‌سازی و نسخه باکیفیت است) و گزارش فنی‌تان، این فایل README.md را به زبان انگلیسی آماده کردم.
+### Phase 1: Simulation & Scalability Test
 
-این فایل دقیقاً توضیح می‌دهد که پروژه شما شامل دو فاز است (Phase 1 & Phase 2) و چگونه باید هر کدام را اجرا کرد.
+This script evaluates how model performance changes with increasing class diversity.
 
-Markdown
-
-# Vintage Image Restoration & Colorization using U-Net
-
-## Overview
-This repository hosts the implementation of a Deep Learning system aimed at restoring and colorizing "vintage" photographs. Unlike standard colorization tasks that simply predict colors for grayscale images, this project focuses on a comprehensive restoration pipeline: **reversing Sepia tones, removing noise, and restoring original colors.**
-
-The project is structured into two distinct execution phases to balance theoretical validation with practical application:
-
-1.  **Phase 1 (Simulation & Scalability):** A lightweight U-Net trained on synthetic data to validate training logic and analyze the impact of class diversity on metrics (SSIM & L1 Loss).
-2.  **Phase 2 (High-Quality Restoration):** An enhanced U-Net architecture (incorporating Batch Normalization & LeakyReLU) trained on the **STL-10** dataset for high-fidelity visual results.
-
-## Key Features
-- **Dual-Phase Approach:** Separate scripts for algorithmic verification (Phase 1) and production-quality training (Phase 2).
-- **Vintage Degradation Pipeline:** Simulates historical image artifacts on-the-fly using:
-    - **Sepia Filter:** Applied via matrix multiplication.
-    - **Gaussian Noise:** Simulates film grain.
-- **Enhanced U-Net Architecture:**
-    - Skip connections for spatial detail preservation.
-    - Expanded bottleneck (512 channels) for semantic context.
-    - Optimized with Batch Normalization to prevent color desaturation.
-- **Automated Dataset Handling:** No manual downloads required. Phase 1 uses synthetic generation, and Phase 2 automatically downloads STL-10 via Torchvision.
-
-## Requirements
-To install the necessary dependencies, run the following command:
+**Command:**
 
 ```bash
-pip install torch numpy matplotlib torchvision
-Project Structure
-│
-├── train_phase1_simulation.py   # Script for scalability analysis (Synthetic Data)
-├── train_phase2_stl10.py        # Script for high-quality restoration (STL-10)
-├── Report.pdf                   # Detailed technical report
-└── README.md                    # Project documentation
-How to Run
-1. Phase 1: Simulation & Scalability Test
-This script runs a comparative experiment to analyze how the model behaves when the number of object classes increases (1, 10, 100, 1000). It uses a lightweight U-Net and synthetic data.
-
-Command:
-
-Bash
-
 python train_phase1_simulation.py
-Output:
+```
 
-Training logs for different class subsets.
+**Outputs:**
 
-Comparative Graphs: Displays the evolution of L1 Loss and SSIM over epochs.
+* Training logs for each class configuration
+* Graphs showing **L1 Loss** and **SSIM** over epochs
+* Generated folders:
 
-2. Phase 2: High-Quality Restoration
-This script trains the Enhanced High-Quality U-Net on the STL-10 dataset (96x96 resolution). It focuses on visual performance.
+  * `/Outputs/Color/` – model predictions
+  * `/Outputs/Gray/` – degraded inputs
+  * `/Images/train` and `/Images/val`
+  * `/Models/` (if `save_model=True`)
 
-Command:
+---
+
+### Phase 2: High-Quality Restoration
+
+Trains the enhanced U-Net on the STL-10 dataset (96×96 resolution).
+
+**Command:**
+
+```bash
 python train_phase2_stl10.py
+```
 
-Output:
+**Outputs:**
 
-Automatically downloads the STL-10 dataset to ./data.
+* Automatic download of STL-10 into `./data`
+* Training of the restoration network
+* Visual comparisons:
 
-Trains the model to remove sepia and noise.
+  * Vintage input
+  * Model output
+  * Ground truth image
 
-Visual Results: Displays a side-by-side comparison of Input (Vintage) vs. AI Output vs. Ground Truth.
+---
 
+## Technical Details
 
-Technical DetailsThe Degradation ModelThe model learns a supervised mapping $I \approx f_\theta(I_{vintage})$ where the input is generated mathematically:$$ I_{vintage} = \text{Noise}(\text{Sepia}(I_{clean}))  <img width="1141" height="790" alt="download (5)" src="https://github.com/user-attachments/assets/c5a8b50f-ae47-4eaa-8601-dbea59db77f0" />
-<img width="1390" height="590" alt="download (4)" src="https://github.com/user-attachments/assets/f2417d57-c256-4d9d-8290-22408de5135a" />
-<img width="1141" height="790" alt="download (5)" src="https://github.com/user-attachments/assets/d42d755d-de4f-482e-a284-f8e6249bfe7a" />
-<img width="1390" height="590" alt="download (4)" src="https://github.com/user-attachments/assets/f49b17ac-8627-4555-9c54-634865e84a55" />
-$$ArchitectureWe utilize a U-Net architecture with an Encoder-Decoder structure.
- The Phase 2 model is upgraded with:LeakyReLU (0.2): To prevent dying gradients.
-Batch Normalization: To stabilize training and ensure vibrant color prediction.
-ResultsPhase 1 (Quantitative)Graphs generated by Phase 1 demonstrate the trade-off between dataset diversity and convergence speed.
-Phase 2 (Qualitative)The model successfully restores natural colors from heavily degraded sepia inputs.
-(You can add your screenshots here, e.g., the bird or ship images)AuthorsEl ouardi AymaneMajid BonyadiUniversity of Strasbourg
+### Degradation Model
 
+The network learns a supervised mapping:
 
+[ I \approx f_\theta(I_{vintage}) ]
+
+where the degraded input is generated as:
+
+[ I_{vintage} = \text{Noise}(\text{Sepia}(I_{clean})) ]
+
+This allows full control over degradation severity and ensures pixel-wise supervision.
+
+---
+
+### Architecture
+
+A classic **U-Net encoder–decoder** structure is used.
+
+**Phase 2 enhancements include:**
+
+* **LeakyReLU (α = 0.2)** to avoid dying neurons
+* **Batch Normalization** for stable training and vivid color reconstruction
+* **512-channel bottleneck** for rich semantic context
+
+---
 
 ## Results
-![image](https://user-images.githubusercontent.com/38180831/215289552-d3fd414a-84d9-4eda-9ead-b70abb5e59c5.png)
 
-### Demonstrating Color Temperature Control 
-![image](https://user-images.githubusercontent.com/38180831/215289605-c464a3bd-d50a-4a19-9aed-90f9c624e035.png)
+### Phase 1 – Quantitative Analysis
 
+Scalability experiments highlight the trade-off between dataset diversity and convergence speed.
+
+*(Insert SSIM & L1 loss plots here)*
+
+### Phase 2 – Qualitative Results
+
+The model successfully restores natural colors from heavily degraded sepia images.
+
+*(Insert before / after restoration examples here – birds, ships, portraits, etc.)*
+
+---
+
+## Authors
+
+* **El Ouardi Aymane**
+* **Majid Bonyadi**
+
+**University of Strasbourg**
+
+---
+
+## Acknowledgments
+
+This project was developed for academic research purposes in image restoration and deep learning, with a focus on explainability, scalability, and visual fidelity.
+<img width="1141" height="790" alt="download (5)" src="https://github.com/user-attachments/assets/56ed6a3b-1290-48ae-9254-c013dee4782b" />
+<img width="1390" height="590" alt="download (4)" src="https://github.com/user-attachments/assets/34f7403a-5ea2-4013-9267-f6510afaf9ae" />
