@@ -1,19 +1,29 @@
-# Image Colorization using Convolutional Neural Nets
+# Vintage Image Restoration & Colorization using U-Net
+
 ## Overview
-Welcome to the repository, this code provides a solution to a colorization task using Convolutional Neural Networks (CNNs) in PyTorch. This project is aimed at transforming grayscale images to their corresponding colorful images, and it can be used to enhance the quality of old or faded photographs. The code utilizes the latest techniques in deep learning and computer vision to produce visually appealing results. The user can run the code on their own images or use the provided sample dataset to see the results. The project also provides separate training and inference code to control the color temperature of the output images. This allows users to fine-tune the model to their specific needs and preferences. 
+This repository hosts the implementation of a Deep Learning system aimed at restoring and colorizing "vintage" photographs. Unlike standard colorization tasks that simply predict colors for grayscale images, this project focuses on a comprehensive restoration pipeline: **reversing Sepia tones, removing noise, and restoring original colors.**
+
+The project is structured into two distinct execution phases to balance theoretical validation with practical application:
+
+1.  **Phase 1 (Simulation & Scalability):** A lightweight U-Net trained on synthetic data to validate training logic and analyze the impact of class diversity on metrics (SSIM & L1 Loss).
+2.  **Phase 2 (High-Quality Restoration):** An enhanced U-Net architecture (incorporating Batch Normalization & LeakyReLU) trained on the **STL-10** dataset for high-fidelity visual results.
+
+## Key Features
+- **Dual-Phase Approach:** Separate scripts for algorithmic verification (Phase 1) and production-quality training (Phase 2).
+- **Vintage Degradation Pipeline:** Simulates historical image artifacts on-the-fly using:
+    - **Sepia Filter:** Applied via matrix multiplication.
+    - **Gaussian Noise:** Simulates film grain.
+- **Enhanced U-Net Architecture:**
+    - Skip connections for spatial detail preservation.
+    - Expanded bottleneck (512 channels) for semantic context.
+    - Optimized with Batch Normalization to prevent color desaturation.
+- **Automated Dataset Handling:** No manual downloads required. Phase 1 uses synthetic generation, and Phase 2 automatically downloads STL-10 via Torchvision.
 
 ## Requirements
+To install the necessary dependencies, run the following command:
 
-- PyTorch (>= 1.7.0)
-- Numpy (>= 1.19.3)
-- Matplotlib (>= 3.3.3)
-- Scikit-Image (>= 0.18.3)
-- TorchVision (>= 0.8.1)
-- OpenCV-Python (>= 4.5.4)
-
-It is recommended to use a virtual environment for the project to manage the dependencies. The dependencies can be installed by running the following command:
-`pip install torch numpy matplotlib scikit-image torchvision opencv-python`
-
+```bash
+pip install torch numpy matplotlib torchvision
 ## How to Train the Model
 
 1. Clone this repository using `git clone https://github.com/williamcfrancis/CNN-Image-Colorization-Pytorch.git`
@@ -22,51 +32,99 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
 
 ```
 │
-└───Image_colorization_William
-│      train.py
-│      basic_model.py
-|      colorize_data.py
-|      inference_script.py
-|      train_hue_control.py
-|      colorize_data_hue_control.py
-|      Report.pdf
-|      README.md  <-- you are here
-|
-└───train_landscape_images
-    │ 
-    └─landscape_images
-           1.jpg
-           2.jpg
+├── train_phase1_simulation.py   # Script for scalability analysis (Synthetic Data)
+├── train_phase2_stl10.py        # Script for high-quality restoration (STL-10)
+├── Report.pdf                   # Detailed technical report
+└── README.md                    # Project documentation
 ```
 
 2. Run train.py with the following arguments:
 
-`--image_dir`: Directory containing all images in the dataset\
-`--n_val`: Number of images for validation\
-`--epochs`: Number of training epochs\
-`--save_images`: Whether to save input and output images during validation\
-`--lr`: Learning rate for training\
-`--weight_decay`: Weight decay value for Adam optimizer\
-`--save_model`: Whether to save the model after training\
-`--loss`: Choose between 'mae' or 'mse' Loss for training\
-`--batch_size`: Batch size for training and validation
-
+1. Phase 1: Simulation & Scalability Test
+This script runs a comparative experiment to analyze how the model behaves when the number of object classes increases (1, 10, 100, 1000). It uses a lightweight U-Net and synthetic data.
+python train_phase1_simulation.py
 The training creates a `/Outputs/` folder with subfolders `/Color/` and `/Gray/`. Validation results are saved in `/Color/` and inputs in `/Gray/`. The training also creates an `/Images/` folder with `train/val` images separated into different folders. If `save_model` is enabled, the final model is saved in a `/Models/` folder as a .pth file.
 
-## How to Train with Color Temperature Control
+بله، بر اساس کدهای شما (که شامل دو بخش شبیه‌سازی و نسخه باکیفیت است) و گزارش فنی‌تان، این فایل README.md را به زبان انگلیسی آماده کردم.
 
-- Run `train_hue_control.py` and follow the training instructions above.
-- The color temperature can be adjusted in `colorize_data_hue_control.py` by changing the hue value.
+این فایل دقیقاً توضیح می‌دهد که پروژه شما شامل دو فاز است (Phase 1 & Phase 2) و چگونه باید هر کدام را اجرا کرد.
 
-## Run Inference
-To run inference on a grayscale image, the saved model can be used. The following steps outline how to perform inference:
+Markdown
 
-1. Place the test image in the `/inference/` folder and name it test_img.jpg (this can be changed by passing arguments).
-2. Run the `inference_script.py` file.
-3. Use arguments from the command line to set the parameters. The following arguments are available:\
-`--model_path`: Path to the saved model.\
-`--image_path`: Path to the grayscale test image.
-4. The inference output can be found in the `/inference/` folder as `inference_output.jpg`.
+# Vintage Image Restoration & Colorization using U-Net
+
+## Overview
+This repository hosts the implementation of a Deep Learning system aimed at restoring and colorizing "vintage" photographs. Unlike standard colorization tasks that simply predict colors for grayscale images, this project focuses on a comprehensive restoration pipeline: **reversing Sepia tones, removing noise, and restoring original colors.**
+
+The project is structured into two distinct execution phases to balance theoretical validation with practical application:
+
+1.  **Phase 1 (Simulation & Scalability):** A lightweight U-Net trained on synthetic data to validate training logic and analyze the impact of class diversity on metrics (SSIM & L1 Loss).
+2.  **Phase 2 (High-Quality Restoration):** An enhanced U-Net architecture (incorporating Batch Normalization & LeakyReLU) trained on the **STL-10** dataset for high-fidelity visual results.
+
+## Key Features
+- **Dual-Phase Approach:** Separate scripts for algorithmic verification (Phase 1) and production-quality training (Phase 2).
+- **Vintage Degradation Pipeline:** Simulates historical image artifacts on-the-fly using:
+    - **Sepia Filter:** Applied via matrix multiplication.
+    - **Gaussian Noise:** Simulates film grain.
+- **Enhanced U-Net Architecture:**
+    - Skip connections for spatial detail preservation.
+    - Expanded bottleneck (512 channels) for semantic context.
+    - Optimized with Batch Normalization to prevent color desaturation.
+- **Automated Dataset Handling:** No manual downloads required. Phase 1 uses synthetic generation, and Phase 2 automatically downloads STL-10 via Torchvision.
+
+## Requirements
+To install the necessary dependencies, run the following command:
+
+```bash
+pip install torch numpy matplotlib torchvision
+Project Structure
+│
+├── train_phase1_simulation.py   # Script for scalability analysis (Synthetic Data)
+├── train_phase2_stl10.py        # Script for high-quality restoration (STL-10)
+├── Report.pdf                   # Detailed technical report
+└── README.md                    # Project documentation
+How to Run
+1. Phase 1: Simulation & Scalability Test
+This script runs a comparative experiment to analyze how the model behaves when the number of object classes increases (1, 10, 100, 1000). It uses a lightweight U-Net and synthetic data.
+
+Command:
+
+Bash
+
+python train_phase1_simulation.py
+Output:
+
+Training logs for different class subsets.
+
+Comparative Graphs: Displays the evolution of L1 Loss and SSIM over epochs.
+
+2. Phase 2: High-Quality Restoration
+This script trains the Enhanced High-Quality U-Net on the STL-10 dataset (96x96 resolution). It focuses on visual performance.
+
+Command:
+python train_phase2_stl10.py
+
+Output:
+
+Automatically downloads the STL-10 dataset to ./data.
+
+Trains the model to remove sepia and noise.
+
+Visual Results: Displays a side-by-side comparison of Input (Vintage) vs. AI Output vs. Ground Truth.
+
+
+Technical DetailsThe Degradation ModelThe model learns a supervised mapping $I \approx f_\theta(I_{vintage})$ where the input is generated mathematically:$$ I_{vintage} = \text{Noise}(\text{Sepia}(I_{clean}))  <img width="1141" height="790" alt="download (5)" src="https://github.com/user-attachments/assets/c5a8b50f-ae47-4eaa-8601-dbea59db77f0" />
+<img width="1390" height="590" alt="download (4)" src="https://github.com/user-attachments/assets/f2417d57-c256-4d9d-8290-22408de5135a" />
+<img width="1141" height="790" alt="download (5)" src="https://github.com/user-attachments/assets/d42d755d-de4f-482e-a284-f8e6249bfe7a" />
+<img width="1390" height="590" alt="download (4)" src="https://github.com/user-attachments/assets/f49b17ac-8627-4555-9c54-634865e84a55" />
+$$ArchitectureWe utilize a U-Net architecture with an Encoder-Decoder structure.
+ The Phase 2 model is upgraded with:LeakyReLU (0.2): To prevent dying gradients.
+Batch Normalization: To stabilize training and ensure vibrant color prediction.
+ResultsPhase 1 (Quantitative)Graphs generated by Phase 1 demonstrate the trade-off between dataset diversity and convergence speed.
+Phase 2 (Qualitative)The model successfully restores natural colors from heavily degraded sepia inputs.
+(You can add your screenshots here, e.g., the bird or ship images)AuthorsEl ouardi AymaneMajid BonyadiUniversity of Strasbourg
+
+
 
 ## Results
 ![image](https://user-images.githubusercontent.com/38180831/215289552-d3fd414a-84d9-4eda-9ead-b70abb5e59c5.png)
